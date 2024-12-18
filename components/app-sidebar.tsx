@@ -1,4 +1,9 @@
-import { Calendar, ChevronDown, ChevronUp, Home, Inbox, MoreHorizontal, Search, Settings } from "lucide-react"
+'use client'
+import axios from "axios";
+import { useEffect, useState } from "react";
+import ChatHistory from "@/components/chatHistory"
+
+import { Calendar, ChevronUp, Home, Inbox, Search, Settings } from "lucide-react"
 import Link from 'next/link'
 import {
     Sidebar,
@@ -18,44 +23,31 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import ChatHistory from "@/components/chatHistory"
+import { ChatHistoryType } from "@/types";
 
 
-// Menu items.
-const items = [
-    {
-        title: "Chat 1",
-        url: "/chat",
-        icon: Home,
-    },
-    {
-        title: "Inbox",
-        url: "#",
-        icon: Inbox,
-    },
-    {
-        title: "Calendar",
-        url: "#",
-        icon: Calendar,
-    },
-    {
-        title: "Search",
-        url: "#",
-        icon: Search,
-    },
-    {
-        title: "Settings",
-        url: "#",
-        icon: Settings,
-    },
-]
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
+
 
 export function AppSidebar() {
+    const [chat, setChat] = useState<ChatHistoryType[] | null>(null);
+
+    const fetchData = async () => {
+        try {
+            const chatHistoryRes = await axios.get<ChatHistoryType[]>(API_BASE_URL+'/chatHistory');
+            setChat(chatHistoryRes.data);
+        } catch (error) {
+            console.error("Error fetching bot info:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
     return (
         <>
             <Sidebar>
@@ -64,7 +56,6 @@ export function AppSidebar() {
                         <SidebarMenuItem>
                             <SidebarMenuButton>
                                 <Link href="/">
-
                                     <span>Chat Gemini</span>
                                 </Link>
                             </SidebarMenuButton>
@@ -76,7 +67,7 @@ export function AppSidebar() {
                     <SidebarGroup>
                         <SidebarGroupLabel>Chat history</SidebarGroupLabel>
                         <SidebarGroupContent>
-                            <ChatHistory />
+                            <ChatHistory data={chat} />
                         </SidebarGroupContent>
                     </SidebarGroup>
                 </SidebarContent>
@@ -96,10 +87,10 @@ export function AppSidebar() {
                                     className="w-[--radix-popper-anchor-width]"
                                 >
                                     <DropdownMenuItem>
-                                        <span>Account</span>
+                                        <span>Profile</span>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem>
-                                        <span>Billing</span>
+                                        <span>Setting</span>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem>
                                         <span>Sign out</span>

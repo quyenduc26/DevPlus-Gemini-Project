@@ -1,0 +1,35 @@
+{
+    "botInfo": {
+      "id": "bot-001",
+      "name": "Gemini Vietnam",
+      "description": "An AI chatbot to assist with questions and tasks",
+      "version": "1.0",
+      "createdDate": "2024-12-18"
+    },
+    "users": [
+      { "id": "user-001", "name": "Alice", "email": "alice@example.com" },
+      { "id": "user-002", "name": "Bob", "email": "bob@example.com" }
+    ],
+    "chatHistory": [
+      {
+        "id": "chat-001",
+        "userId": "user-001",
+        "title": "Conversation 1",
+        "messages": [
+          { "id": 1, "author": "Alice", "content": "Hi, can you help me with my project?", "timestamp": "2024-12-18T09:00:00Z" },
+          { "id": 2, "author": "ChatAI", "content": "Sure, Alice! What do you need help with?", "timestamp": "2024-12-18T09:01:00Z" }
+        ]
+      },
+      {
+        "id": "chat-002",
+        "userId": "user-002",
+        "title": "Conversation 2",
+        "messages": [
+          { "id": 1, "author": "Bob", "content": "What is the weather today?", "timestamp": "2024-12-18T10:00:00Z" },
+          { "id": 2, "author": "ChatAI", "content": "Today's weather is sunny with a high of 25°C.", "timestamp": "2024-12-18T10:01:00Z" },
+          { "id": 3, "author": "Bob", "content": "Thanks!", "timestamp": "2024-12-18T10:02:00Z" }
+        ]
+      }
+    ]
+  }
+  

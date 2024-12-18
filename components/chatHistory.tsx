@@ -50,15 +50,9 @@ export default function ChatHistory({ data }: ChatHistoryProps) {
                     </SidebarMenuItem>
                 ))
             ) : (
-                <div className="flex flex-col items-center justify-center p-4">
-                    <p className="mb-2 text-gray-600">No chat history found.</p>
-                    <button
-                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                        onClick={() => console.log('Create New Chat')}
-                    >
-                        Create New Chat
-                    </button>
-                </div>
+                <div className="fixed inset-0 flex items-center justify-center bg-gray-100">
+                <div className="w-16 h-16 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+              </div>
             )}
         </SidebarMenu>
     );

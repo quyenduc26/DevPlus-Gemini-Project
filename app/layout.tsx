@@ -1,8 +1,8 @@
-// app/layout.tsx
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import "./globals.css";
 import type { Metadata } from "next";
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: "Next.js 15 SPA Layout",
@@ -20,7 +20,9 @@ export default function RootLayout({
         <SidebarProvider>
           <div className="flex h-screen w-full">
             <div className="bg-gray-900 text-white">
-              <AppSidebar />
+              <SessionProvider>
+                <AppSidebar />
+              </SessionProvider>
             </div>
             <div className="flex flex-col flex-grow overflow-hidden">
               <header className="bg-white shadow-sm p-4 flex items-center">

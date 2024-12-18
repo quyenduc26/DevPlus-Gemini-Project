@@ -8,12 +8,6 @@ import { Button } from "@/components/ui/button";
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
 
 export default function HomePage() {
-<<<<<<< HEAD
-  return (
-    <div className="p-8 w-screen ">
-      <h1 className="text-2xl font-bold">Hello Team can I help you today</h1>
-      <p>This is the home page content.</p>
-=======
   const [bot, setBot] = useState<BotInfoType | null>(null);
 
   const fetchBotInfo = async () => {
@@ -50,7 +44,6 @@ export default function HomePage() {
           <div className="w-16 h-16 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
         </div>
       )}
->>>>>>> 71b7da9787fa99b3e20849db126df3a11ade7c0c
     </div>
   );
 }

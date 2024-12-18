@@ -1,6 +1,8 @@
 import React from 'react'
 import { Calendar, Home, Inbox, MoreHorizontal, Search, Settings } from "lucide-react"
 import Link from 'next/link'
+import { Header } from "@/components/ui/header"
+
 import {
     SidebarMenu,
     SidebarMenuAction,
@@ -17,7 +19,7 @@ import {
 
 import { chatHistoryItem, ChatHistoryProps } from "@/types/index"
 
-const items: chatHistoryItem[]  = [
+const items: chatHistoryItem[] = [
     {
         title: "Chat 1",
         url: "/chat",
@@ -34,16 +36,16 @@ const items: chatHistoryItem[]  = [
         title: "Search",
         url: "#",
     },
-    {
-        title: "Settings",
-        url: "#",
-    },
+    // {
+    //     title: "Settings",
+    //     url: "#",
+    // },
 ]
 
 
 
 
-export default function ChatHistory( ) {
+export default function ChatHistory() {
     return (
         <SidebarMenu>
             {items.map((item) => (
@@ -61,10 +63,10 @@ export default function ChatHistory( ) {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent side="right" align="start">
                             <DropdownMenuItem>
-                                <span>Edit Project</span>
+                                <span>Edit</span>
                             </DropdownMenuItem>
                             <DropdownMenuItem>
-                                <span>Delete Project</span>
+                                <span>Delete</span>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>

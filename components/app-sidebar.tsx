@@ -1,4 +1,4 @@
-import { Calendar, ChevronDown, ChevronUp, Home, Inbox, MoreHorizontal, Search, Settings } from "lucide-react"
+import { Calendar, Home, Inbox, Search, Settings, Blocks, Link2, SunMoon, ListMinus, CirclePlus } from "lucide-react"
 import Link from 'next/link'
 import {
     Sidebar,
@@ -48,11 +48,11 @@ const items = [
         url: "#",
         icon: Search,
     },
-    {
-        title: "Settings",
-        url: "#",
-        icon: Settings,
-    },
+    // {
+    //     title: "Settings",
+    //     url: "#",
+    //     icon: <Settings />,
+    // },
 ]
 
 export function AppSidebar() {
@@ -74,8 +74,9 @@ export function AppSidebar() {
 
                 <SidebarContent>
                     <SidebarGroup>
-                        <SidebarGroupLabel>Chat history</SidebarGroupLabel>
+                        <SidebarGroupLabel> <CirclePlus /><p> New chat</p></SidebarGroupLabel>
                         <SidebarGroupContent>
+                            <p>Recently</p>
                             <ChatHistory />
                         </SidebarGroupContent>
                     </SidebarGroup>
@@ -87,8 +88,7 @@ export function AppSidebar() {
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <SidebarMenuButton>
-                                        Username
-                                        <ChevronUp className="ml-auto" />
+                                        <Settings /> Setting
                                     </SidebarMenuButton>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent
@@ -96,13 +96,16 @@ export function AppSidebar() {
                                     className="w-[--radix-popper-anchor-width]"
                                 >
                                     <DropdownMenuItem>
-                                        <span>Account</span>
+                                        <Blocks /> Extensions
                                     </DropdownMenuItem>
                                     <DropdownMenuItem>
-                                        <span>Billing</span>
+                                        <Link2 />Your public link
                                     </DropdownMenuItem>
                                     <DropdownMenuItem>
-                                        <span>Sign out</span>
+                                        <SunMoon />Dark Mode
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        <ListMinus />Real-time responses
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>

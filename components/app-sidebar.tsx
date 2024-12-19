@@ -57,7 +57,7 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton>
-              <Link href="/">
+              <Link className="w-full" href="/">
                 <span>Chat Gemini</span>
               </Link>
             </SidebarMenuButton>
@@ -89,12 +89,12 @@ export function AppSidebar() {
                 className="w-[--radix-popper-anchor-width]"
               >
                 <DropdownMenuItem>
-                  <Link href="/profile">
+                  <Link className="w-full" href="/profile">
                     <span>Profile</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Link href="/settings">
+                  <Link className="w-full" href="/settings">
                     <span>Setting</span>
                   </Link>
                 </DropdownMenuItem>
@@ -104,10 +104,10 @@ export function AppSidebar() {
                       onClick={() => signOut()}
                       className="w-full text-left"
                     >
-                      <span>Sign out</span>
+                      Sign out
                     </button>
                   ) : (
-                    <Link href="/login">
+                    <Link className="w-full" href="/login">
                       <span>Sign in</span>
                     </Link>
                   )}

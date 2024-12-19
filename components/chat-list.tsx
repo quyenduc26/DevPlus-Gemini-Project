@@ -1,7 +1,8 @@
-'use client';
+'use client'
 
 import { Bot } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Image from "next/image";
 
 type ChatMessagesProps = {
   bot: { name: string; description: string; version: string; createdDate: string };
@@ -31,8 +32,19 @@ export function ChatMessages({ bot, messages }: ChatMessagesProps) {
                   : 'bg-blue-100 flex-row-reverse' // User: on the right 
               )}
             >
-              <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground">
-                {message.role === 'assistant' ? <Bot className="h-5 w-5" /> : 'U'}
+              <div className="h-8 w-8 rounded-full flex items-center justify-center text-primary-foreground">
+                {message.role === 'assistant' ? <Bot className="h-5 w-5 bg-primary rounded-full h-8 w-8" /> :
+                  <div className="flex items-center gap-2">
+                    <Image
+                      src={"/avatar-default.png"}
+                      alt="User Avatar"
+                      className="rounded-full object-cover object-center bg-gray-200"
+                      width={32}
+                      height={32}
+                      priority
+                    />
+
+                  </div>}
               </div>
               <div className="flex-1">
                 <p className="font-medium mb-1 text-sm text-gray-800">

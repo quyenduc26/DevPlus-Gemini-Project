@@ -40,10 +40,10 @@ export default function ChatHistory({ data }: ChatHistoryProps) {
               </DropdownMenuTrigger>
               <DropdownMenuContent side="right" align="start">
                 <DropdownMenuItem>
-                  <span>Edit</span>
+                  Edit
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <span>Delete</span>
+                  Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

@@ -1,8 +1,11 @@
 import { auth } from "@/auth";
 import Image from "next/image";
-
-const ProfilePage = async () => {
+import { redirect } from "next/navigation";
+export default async function ProfilePage ()  {
     const userInfor= await auth();
+    if(!userInfor?.user){
+        redirect("/login");
+    }
 
   return (
     <div className="p-4 md:p-6 lg:p-2 flex items-start justify-center bg-gray-100 ">
@@ -12,7 +15,7 @@ const ProfilePage = async () => {
             <h1 className="text-2xl font-bold text-gray-900">User</h1>
             <div className="relative h-12 w-12">
               <Image
-                src={userInfor?.user?.image || "/defaultProfile.webp"}
+                src={userInfor?.user?.image || "/avatar-default.jpg"}
                 alt="Profile picture"
                 className="rounded-full object-cover"
                 fill
@@ -102,5 +105,3 @@ const ProfilePage = async () => {
   );
 }
 
-
-export default ProfilePage;

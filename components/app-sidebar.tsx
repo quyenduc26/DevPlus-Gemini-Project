@@ -28,6 +28,7 @@ import {
 
 import { ChatHistoryType } from "@/types";
 import ChatHistory from "@/components/chatHistory";
+import Image from "next/image";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
@@ -57,7 +58,7 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton>
-              <Link href="/">
+              <Link className="w-full" href="/">
                 <span>Chat Gemini</span>
               </Link>
             </SidebarMenuButton>
@@ -80,7 +81,17 @@ export function AppSidebar() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
-                  {session?.user?.name || "Username"} {/* Sử dụng session */}
+                  <div className="flex items-center gap-2">
+                    <Image
+                      src={session?.user?.image || "/avatar-default.png"}
+                      alt="User Avatar"
+                      className="rounded-full object-cover object-center bg-gray-200"
+                      width={28} 
+                      height={28} 
+                      priority
+                    />
+                    {session?.user?.name || "Guest"} {/* Sử dụng session */}
+                  </div>
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -96,7 +107,7 @@ export function AppSidebar() {
                   ""
                 )}
                 <DropdownMenuItem>
-                  <Link href="/settings">
+                  <Link className="w-full" href="/settings">
                     <span>Setting</span>
                   </Link>
                 </DropdownMenuItem>
@@ -106,10 +117,10 @@ export function AppSidebar() {
                       onClick={() => signOut()}
                       className="w-full text-left"
                     >
-                      <span>Sign out</span>
+                      Sign out
                     </button>
                   ) : (
-                    <Link href="/login">
+                    <Link className="w-full" href="/login">
                       <span>Sign in</span>
                     </Link>
                   )}

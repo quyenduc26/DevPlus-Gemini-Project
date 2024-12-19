@@ -1,4 +1,6 @@
 import React from "react";
+import Google from "@/public/google.svg"
+import Github from "@/public/github.svg"
 import { LoginButton } from "./LoginButton";
 import { auth, signIn } from "@/auth";
 
@@ -15,14 +17,24 @@ const LoginPage = async () => {
             <p className="text-gray-600">You are successfully logged in.</p>
           </div>
         ) : (
-          <form
-            action={async () => {
-              "use server";
-              await signIn("github");
-            }}
-          >
-            <LoginButton className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white" />
-          </form>
+          <div>
+            <form
+              action={async () => {
+                "use server";
+                await signIn("github");
+              }}
+            >
+              <LoginButton icon={Github} provider='Github' className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white" />
+            </form>
+            <form
+              action={async () => {
+                "use server";
+                await signIn("google");
+              }}
+            >
+              <LoginButton icon={Google} provider='Google'  className="mt-3 bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white" />
+            </form>
+          </div>
         )}
       </div>
     </div>

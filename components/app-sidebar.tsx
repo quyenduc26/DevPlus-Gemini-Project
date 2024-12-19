@@ -88,11 +88,13 @@ export function AppSidebar() {
                 side="top"
                 className="w-[--radix-popper-anchor-width]"
               >
-                <DropdownMenuItem>
+                {session?.user ? (
                   <Link href="/profile">
-                    <span>Profile</span>
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
                   </Link>
-                </DropdownMenuItem>
+                ) : (
+                  ""
+                )}
                 <DropdownMenuItem>
                   <Link href="/settings">
                     <span>Setting</span>

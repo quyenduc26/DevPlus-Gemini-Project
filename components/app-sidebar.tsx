@@ -1,106 +1,122 @@
-'use client'
+"use client";
+
 import axios from "axios";
 import { useEffect, useState } from "react";
-import ChatHistory from "@/components/chatHistory"
+import { useSession, signOut } from "next-auth/react";
 
-import { Calendar, ChevronUp, Home, Inbox, Search, Settings } from "lucide-react"
-import Link from 'next/link'
+import { ChevronUp } from "lucide-react";
+import Link from "next/link";
 import {
-    Sidebar,
-    SidebarContent,
-    SidebarFooter,
-    SidebarGroup,
-    SidebarGroupContent,
-    SidebarGroupLabel,
-    SidebarHeader,
-    SidebarMenu,
-    SidebarMenuAction,
-    SidebarMenuButton,
-    SidebarMenuItem,
-} from "@/components/ui/sidebar"
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
 
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import { ChatHistoryType } from "@/types";
+import ChatHistory from "@/components/chatHistory";
 
-
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
-
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
 
 export function AppSidebar() {
-    const [chat, setChat] = useState<ChatHistoryType[] | null>(null);
+  const { data: session } = useSession(); // Lấy session từ NextAuth
+  const [chat, setChat] = useState<ChatHistoryType[] | null>(null);
 
-    const fetchData = async () => {
-        try {
-            const chatHistoryRes = await axios.get<ChatHistoryType[]>(API_BASE_URL+'/chatHistory');
-            setChat(chatHistoryRes.data);
-        } catch (error) {
-            console.error("Error fetching bot info:", error);
-        }
-    };
+  const fetchData = async () => {
+    try {
+      const chatHistoryRes = await axios.get<ChatHistoryType[]>(
+        API_BASE_URL + "/chatHistory"
+      );
+      setChat(chatHistoryRes.data);
+    } catch (error) {
+      console.error("Error fetching chat history:", error);
+    }
+  };
 
-    useEffect(() => {
-        fetchData();
-    }, []);
-    return (
-        <>
-            <Sidebar>
-                <SidebarHeader>
-                    <SidebarMenu>
-                        <SidebarMenuItem>
-                            <SidebarMenuButton>
-                                <Link href="/">
-                                    <span>Chat Gemini</span>
-                                </Link>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                    </SidebarMenu>
-                </SidebarHeader>
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-                <SidebarContent>
-                    <SidebarGroup>
-                        <SidebarGroupLabel>Chat history</SidebarGroupLabel>
-                        <SidebarGroupContent>
-                            <ChatHistory data={chat} />
-                        </SidebarGroupContent>
-                    </SidebarGroup>
-                </SidebarContent>
+  return (
+    <Sidebar>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton>
+              <Link className="w-full" href="/">
+                <span>Chat Gemini</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
 
-                <SidebarFooter>
-                    <SidebarMenu>
-                        <SidebarMenuItem>
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <SidebarMenuButton>
-                                        Username
-                                        <ChevronUp className="ml-auto" />
-                                    </SidebarMenuButton>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent
-                                    side="top"
-                                    className="w-[--radix-popper-anchor-width]"
-                                >
-                                    <DropdownMenuItem>
-                                        <span>Profile</span>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem>
-                                        <span>Setting</span>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem>
-                                        <span>Sign out</span>
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </SidebarMenuItem>
-                    </SidebarMenu>
-                </SidebarFooter>
-            </Sidebar>
-        </>
-    )
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Chat history</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <ChatHistory data={chat} />
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton>
+                  {session?.user?.name || "Username"} {/* Sử dụng session */}
+                  <ChevronUp className="ml-auto" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                side="top"
+                className="w-[--radix-popper-anchor-width]"
+              >
+                <DropdownMenuItem>
+                  <Link className="w-full" href="/profile">
+                    <span>Profile</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link className="w-full" href="/settings">
+                    <span>Setting</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  {session?.user ? (
+                    <button
+                      onClick={() => signOut()}
+                      className="w-full text-left"
+                    >
+                      Sign out
+                    </button>
+                  ) : (
+                    <Link className="w-full" href="/login">
+                      <span>Sign in</span>
+                    </Link>
+                  )}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+    </Sidebar>
+  );
 }

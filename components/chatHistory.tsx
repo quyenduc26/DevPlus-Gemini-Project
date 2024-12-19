@@ -1,14 +1,6 @@
-<<<<<<< HEAD
-import React from 'react'
-import { Calendar, Home, Inbox, MoreHorizontal, Search, Settings } from "lucide-react"
-import Link from 'next/link'
-import { Header } from "@/components/ui/header"
-
-=======
 import React from "react";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
->>>>>>> 71b7da9787fa99b3e20849db126df3a11ade7c0c
 import {
   SidebarMenu,
   SidebarMenuAction,

@@ -25,63 +25,6 @@ import {
 
 import { ChatHistoryType } from "@/types";
 
-<<<<<<< HEAD
-const items: chatHistoryItem[] = [
-    {
-        title: "Chat 1",
-        url: "/chat",
-    },
-    {
-        title: "Inbox",
-        url: "#",
-    },
-    {
-        title: "Calendar",
-        url: "#",
-    },
-    {
-        title: "Search",
-        url: "#",
-    },
-    // {
-    //     title: "Settings",
-    //     url: "#",
-    // },
-]
-
-
-
-
-export default function ChatHistory() {
-    return (
-        <SidebarMenu>
-            {items.map((item) => (
-                <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                        <Link href={item.url}>
-                            <span>{item.title}</span>
-                        </Link>
-                    </SidebarMenuButton>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <SidebarMenuAction>
-                                <MoreHorizontal />
-                            </SidebarMenuAction>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent side="right" align="start">
-                            <DropdownMenuItem>
-                                <span>Edit</span>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <span>Delete</span>
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </SidebarMenuItem>
-            ))}
-        </SidebarMenu>
-    )
-=======
 interface ChatHistoryProps {
   data: ChatHistoryType[] | null;
 }
@@ -121,5 +64,4 @@ export default function ChatHistory({ data }: ChatHistoryProps) {
       )}
     </SidebarMenu>
   );
->>>>>>> 71b7da9787fa99b3e20849db126df3a11ade7c0c
 }

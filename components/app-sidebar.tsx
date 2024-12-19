@@ -28,6 +28,7 @@ import {
 
 import { ChatHistoryType } from "@/types";
 import ChatHistory from "@/components/chatHistory";
+import Image from "next/image";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
@@ -80,7 +81,17 @@ export function AppSidebar() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
-                  {session?.user?.name || "Username"} {/* Sử dụng session */}
+                  <div className="flex items-center gap-2">
+                    <Image
+                      src={session?.user?.image || "/avatar-default.png"}
+                      alt="User Avatar"
+                      className="rounded-full object-cover object-center bg-gray-200"
+                      width={28} 
+                      height={28} 
+                      priority
+                    />
+                    {session?.user?.name || "Guest"} {/* Sử dụng session */}
+                  </div>
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -88,11 +99,13 @@ export function AppSidebar() {
                 side="top"
                 className="w-[--radix-popper-anchor-width]"
               >
-                <DropdownMenuItem>
-                  <Link className="w-full" href="/profile">
-                    <span>Profile</span>
+                {session?.user ? (
+                  <Link href="/profile">
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
                   </Link>
-                </DropdownMenuItem>
+                ) : (
+                  ""
+                )}
                 <DropdownMenuItem>
                   <Link className="w-full" href="/settings">
                     <span>Setting</span>

@@ -1,21 +1,24 @@
-'use client'
+'use client';
 
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { BotInfoType } from "@/types";
-import { Button } from "@/components/ui/button";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { ChatMessages } from '@/components/chat-list';
+import { ChatInput } from '@/components/chat'; 
+import { BotInfoType } from '@/types';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
 
-export default function HomePage() {
+export default function ChatInterface() {
   const [bot, setBot] = useState<BotInfoType | null>(null);
+  const [messages, setMessages] = useState<{ role: 'user' | 'assistant'; content: string }[]>([]);
+  const [input, setInput] = useState('');
 
   const fetchBotInfo = async () => {
     try {
       const response = await axios.get<BotInfoType>(API_BASE_URL + '/botInfo');
       setBot(response.data);
     } catch (error) {
-      console.error("Error fetching bot info:", error);
+      console.error('Error fetching bot info:', error);
     }
   };
 
@@ -23,27 +26,38 @@ export default function HomePage() {
     fetchBotInfo();
   }, []);
 
-  return (
-    <div>
-      {bot ? (
-        <>
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim()) return;
 
-          <div className="p-5">
-            <h1 className="text-2xl font-bold">Welcome to {bot.name}</h1>
-            <p>{bot.description}</p>
-            <p>Version: {bot.version}</p>
-            <p>Lastest Update: {bot.createdDate}</p>
-          </div>
-          <div className="flex p-5 items-center">
-            <input className="w-full border rounded-md m-2 p-1" type="text" placeholder="Message Gemini Vietnam" />
-            <Button variant="outline">Submit</Button>
-          </div>
-        </>
-      ) : (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-100">
-          <div className="w-16 h-16 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
-        </div>
-      )}
+    setMessages([...messages, { role: 'user', content: input }]);
+    setTimeout(() => {
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: 'assistant',
+          content: 'This is a demo response. The actual integration with an AI model would go here.',
+        },
+      ]);
+    }, 1000);
+    setInput('');
+  };
+
+  if (!bot) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gray-100">
+        <div className="w-16 h-16 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col h-[83vh]">
+      {/* ChatMessages Component */}
+      <ChatMessages bot={bot} messages={messages} />
+
+      {/* ChatInput Component */}
+      <ChatInput input={input} setInput={setInput} handleSubmit={handleSubmit} />
     </div>
   );
 }

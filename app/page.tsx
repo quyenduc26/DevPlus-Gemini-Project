@@ -1,48 +1,74 @@
-'use client';
+"use client";
 
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { ChatMessages } from '@/components/chat-list';
-import { ChatInput } from '@/components/chat'; 
-import { BotInfoType } from '@/types';
+import { useEffect, useState, useRef } from "react";
+import { BotInfoType } from "@/types";
+import { ChatMessages } from "@/components/chat-list";
+import { ChatInput } from "@/components/chat";
+import { useAIService, useBotService } from "./hooks";
+import ToastManager from "@/components/ui/ToastManager";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
-
-export default function ChatInterface() {
+export default function HomePage() {
   const [bot, setBot] = useState<BotInfoType | null>(null);
-  const [messages, setMessages] = useState<{ role: 'user' | 'assistant'; content: string }[]>([]);
-  const [input, setInput] = useState('');
+  const [inputMessage, setInputMessage] = useState("");
+  const [chatHistory, setChatHistory] = useState<
+    { role: "user" | "assistant"; content: string }[]
+  >([]);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
-  const fetchBotInfo = async () => {
+  const { handleAIResponse } = useAIService();
+  const { fetchBotInfo } = useBotService();
+
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+
+  // Event Handlers
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputMessage.trim()) return;
+
+    setChatHistory((prev) => [
+      ...prev,
+      { role: "user", content: inputMessage },
+    ]);
+
     try {
-      const response = await axios.get<BotInfoType>(API_BASE_URL + '/botInfo');
-      setBot(response.data);
+      const aiResponse = await handleAIResponse(inputMessage);
+      setChatHistory((prev) => [
+        ...prev,
+        { role: "assistant", content: aiResponse },
+      ]);
     } catch (error) {
-      console.error('Error fetching bot info:', error);
+      setToastMessage(
+        error instanceof Error ? error.message : "Something went wrong"
+      );
+      setToastOpen(true);
     }
+    setInputMessage("");
   };
 
   useEffect(() => {
-    fetchBotInfo();
+    const initBot = async () => {
+      try {
+        const botInfo = await fetchBotInfo();
+        setBot(botInfo);
+      } catch (error) {
+        setToastMessage(
+          error instanceof Error ? error.message : "Something went wrong"
+        );
+        setToastOpen(true);
+      }
+    };
+    initBot();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [chatHistory]);
 
-    setMessages([...messages, { role: 'user', content: input }]);
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: 'assistant',
-          content: 'This is a demo response. The actual integration with an AI model would go here.',
-        },
-      ]);
-    }, 1000);
-    setInput('');
-  };
-
+  // Loading
   if (!bot) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-100">
@@ -51,13 +77,22 @@ export default function ChatInterface() {
     );
   }
 
+  // Render
   return (
-    <div className="flex flex-col h-[83vh]">
+    <div className="flex flex-col h-[85vh]">
       {/* ChatMessages Component */}
-      <ChatMessages bot={bot} messages={messages} />
-
+      <ChatMessages bot={bot} messages={chatHistory} />
       {/* ChatInput Component */}
-      <ChatInput input={input} setInput={setInput} handleSubmit={handleSubmit} />
+      <ChatInput
+        input={inputMessage}
+        setInput={setInputMessage}
+        handleSubmit={handleSubmit}
+      />
+      <ToastManager
+        message={toastMessage}
+        isOpen={toastOpen}
+        onClose={() => setToastOpen(false)}
+      />
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import { Bot } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from "next/image";
+import ReactMarkdown from "react-markdown";
 
 type ChatMessagesProps = {
   bot: { name: string; description: string; version: string; createdDate: string };
@@ -50,7 +51,9 @@ export function ChatMessages({ bot, messages }: ChatMessagesProps) {
                 <p className="font-medium mb-1 text-sm text-gray-800">
                   {message.role === 'assistant' ? 'Chat Gemini' : ''}
                 </p>
-                <p className="text-sm text-gray-600">{message.content}</p>
+                <ReactMarkdown className="text-sm text-gray-600">
+                  {message.content}
+                </ReactMarkdown>
               </div>
             </div>
           ))

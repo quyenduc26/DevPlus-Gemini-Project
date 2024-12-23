@@ -5,8 +5,8 @@ import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
-  title: "Next.js 15 SPA Layout",
-  description: "Sidebar stays fixed while content changes",
+  title: "FloraLens - AI",
+  description: "FloraLens - AI",
 };
 
 export default function RootLayout({

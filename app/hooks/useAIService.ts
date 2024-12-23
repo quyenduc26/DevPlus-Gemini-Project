@@ -1,9 +1,8 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { toast } from "react-hot-toast";
 
 // AI Service
 const useAIService = () => {
-  const botErrorMessage = "Sorry, I have some error. Please try again.";
+  const botErrorMessage = "Something went wrong !!";
   const handleAIResponse = async (userMessage: string) => {
     try {
       const aiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
@@ -25,10 +24,9 @@ const useAIService = () => {
 
       return result.response.text();
     } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Something went wrong !!"
+      throw new Error(
+        error instanceof Error ? error.message : botErrorMessage
       );
-      return botErrorMessage;
     }
   };
 

@@ -3,43 +3,11 @@
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import ReactMarkdown from "react-markdown";
 import { BotInfoType } from "@/types";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Send, Bot, User } from "lucide-react";
+import { ChatMessages } from "@/components/chat-list";
+import { ChatInput } from "@/components/chat";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
-
-// Message Components
-const MessageItem = ({
-  message,
-  index,
-}: {
-  message: { role: string; content: string };
-  index: number;
-}) => (
-  <div
-    key={index}
-    className={`flex items-start space-x-2 mb-4 
-      ${message.role === "user" ? "justify-end" : "justify-start"}`}
-  >
-    {message.role === "bot" && <Bot className="w-6 h-6 mt-1" />}
-    <div
-      className={`p-3 rounded-lg 
-        ${message.role === "user" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
-    >
-      {message.role === "bot" ? (
-        <ReactMarkdown className="markdown-content">
-          {message.content}
-        </ReactMarkdown>
-      ) : (
-        message.content
-      )}
-    </div>
-    {message.role === "user" && <User className="w-6 h-6 mt-1" />}
-  </div>
-);
 
 // AI Service
 const useAIService = () => {
@@ -91,9 +59,8 @@ export default function HomePage() {
   const [bot, setBot] = useState<BotInfoType | null>(null);
   const [inputMessage, setInputMessage] = useState("");
   const [chatHistory, setChatHistory] = useState<
-    { role: string; content: string }[]
+    { role: "user" | "assistant"; content: string }[]
   >([]);
-  const [isLoading, setIsLoading] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const { handleAIResponse } = useAIService();
@@ -104,16 +71,16 @@ export default function HomePage() {
     e.preventDefault();
     if (!inputMessage.trim()) return;
 
-    setIsLoading(true);
     setChatHistory((prev) => [
       ...prev,
       { role: "user", content: inputMessage },
     ]);
 
     const aiResponse = await handleAIResponse(inputMessage);
-    setChatHistory((prev) => [...prev, { role: "bot", content: aiResponse }]);
-
-    setIsLoading(false);
+    setChatHistory((prev) => [
+      ...prev,
+      { role: "assistant", content: aiResponse },
+    ]);
     setInputMessage("");
   };
 
@@ -143,31 +110,17 @@ export default function HomePage() {
   }
 
   // Render
-  return (
-    <div className="container mx-auto p-4 max-w-4xl">
-      <div ref={chatContainerRef} className="h-full p-4 mb-4">
-        {chatHistory.map((message, index) => (
-          <MessageItem key={index} message={message} index={index} />
-        ))}
-      </div>
-      <div className="p-6 bg-gray-50 border rounded-xl">
-        <form onSubmit={handleSubmit} className="flex space-x-2">
-          <Input
-            className="flex-grow"
-            type="text"
-            placeholder="Message Gemini Vietnam"
-            value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
-          />
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? (
-              <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-            ) : (
-              <Send className="w-4 h-4" />
-            )}
-          </Button>
-        </form>
-      </div>
+  return (  
+
+    <div className="flex flex-col h-[85vh]">
+      {/* ChatMessages Component */}
+      <ChatMessages bot={bot} messages={chatHistory} />
+      {/* ChatInput Component */}
+      <ChatInput
+        input={inputMessage}
+        setInput={setInputMessage}
+        handleSubmit={handleSubmit}
+      />
     </div>
   );
 }

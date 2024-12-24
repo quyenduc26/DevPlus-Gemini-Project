@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { useEffect, useState, useRef } from "react";
-import { BotInfoType } from "@/types";
-import { ChatMessages } from "@/components/chat-list";
-import { ChatInput } from "@/components/chat";
-import { useAIService, useBotService } from "./hooks";
-import ToastManager from "@/components/ui/ToastManager";
+import { useEffect, useState, useRef } from 'react';
+import { BotInfoType } from '@/types';
+import { ChatMessages } from '@/components/chat-list';
+import { ChatInput } from '@/components/chat';
+import { useAIService, useBotService } from './hooks';
+import ToastManager from '@/components/ui/ToastManager';
 
 export default function HomePage() {
   const [bot, setBot] = useState<BotInfoType | null>(null);
-  const [inputMessage, setInputMessage] = useState("");
+  const [inputMessage, setInputMessage] = useState('');
   const [chatHistory, setChatHistory] = useState<
-    { role: "user" | "assistant"; content: string }[]
+    { role: 'user' | 'assistant'; content: string }[]
   >([]);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -19,7 +19,7 @@ export default function HomePage() {
   const { fetchBotInfo } = useBotService();
 
   const [toastOpen, setToastOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const [toastMessage, setToastMessage] = useState('');
 
   // Event Handlers
   const handleSubmit = async (e: React.FormEvent) => {
@@ -28,22 +28,22 @@ export default function HomePage() {
 
     setChatHistory((prev) => [
       ...prev,
-      { role: "user", content: inputMessage },
+      { role: 'user', content: inputMessage },
     ]);
 
     try {
       const aiResponse = await handleAIResponse(inputMessage);
       setChatHistory((prev) => [
         ...prev,
-        { role: "assistant", content: aiResponse },
+        { role: 'assistant', content: aiResponse },
       ]);
     } catch (error) {
       setToastMessage(
-        error instanceof Error ? error.message : "Something went wrong"
+        error instanceof Error ? error.message : 'Something went wrong',
       );
       setToastOpen(true);
     }
-    setInputMessage("");
+    setInputMessage('');
   };
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function HomePage() {
         setBot(botInfo);
       } catch (error) {
         setToastMessage(
-          error instanceof Error ? error.message : "Something went wrong"
+          error instanceof Error ? error.message : 'Something went wrong',
         );
         setToastOpen(true);
       }
@@ -72,14 +72,14 @@ export default function HomePage() {
   if (!bot) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-100">
-        <div className="w-16 h-16 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+        <div className="h-16 w-16 animate-spin rounded-full border-4 border-gray-300 border-t-blue-500"></div>
       </div>
     );
   }
 
   // Render
   return (
-    <div className="flex flex-col h-[85vh]">
+    <div className="flex h-[85vh] flex-col">
       {/* ChatMessages Component */}
       <ChatMessages bot={bot} messages={chatHistory} />
       {/* ChatInput Component */}

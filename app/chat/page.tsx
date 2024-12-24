@@ -1,10 +1,11 @@
-'use client'
+'use client';
 
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { BotInfoType, ChatHistoryType } from "@/types";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { BotInfoType, ChatHistoryType } from '@/types';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
 
 export default function HomePage() {
   const [bot, setBot] = useState<BotInfoType | null>(null);
@@ -17,7 +18,7 @@ export default function HomePage() {
       setBot(botInfoRes.data);
       setBot(botInfoRes.data);
     } catch (error) {
-      console.error("Error fetching bot info:", error);
+      console.error('Error fetching bot info:', error);
     }
   };
 

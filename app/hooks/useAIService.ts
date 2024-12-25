@@ -18,9 +18,9 @@ const useAIService = () => {
     } catch (error) {
       throw error;
     }
-  };
+  }
 
-  return { handleAIResponse };
-};
+  return { handleAIResponse }
+}
 
-export default useAIService;
+export default useAIService

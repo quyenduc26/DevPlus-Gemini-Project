@@ -12,17 +12,27 @@ export type BotInfoType = {
     email: string;
   };
   
-  export type ChatHistoryType = {
+  
+  export type MessageType = {
+    id?: string;
+    author: 0 | 1; 
+    content: string;
+    timeStamp: number;
+  };
+
+  export type ChatMessageType = {
+    id?: string;
+    sectionId: string;
+    role: 'user' | 'assistant';
+    content: string;
+    timeStamp?: number;
+  };
+
+  export type ChatSectionType = {
     id: string;
     userId: string;
     title: string;
-    messages: Message[];
-  };
-  
-  export type MessageType = {
-    id?: number;
-    author: 0 | 1; 
-    content: string;
-    timeStamp: string;
+    status: 0 | 1;
+    timeStamp: number;
   };
   

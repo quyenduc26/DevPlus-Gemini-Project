@@ -1,22 +1,30 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { BotInfoType } from "@/types";
+import { BotInfoType, ChatMessageType, ChatSectionType, UserType } from "@/types";
 import { ChatMessages } from "@/components/chat-list";
 import { ChatInput } from "@/components/chat";
-import { useAIService, useBotService } from "./hooks";
+import { useAIService, useBotService, useUserService, useSectionService } from "./hooks";
 import ToastManager from "@/components/ui/ToastManager";
+import axios from "axios";
+import { useSession } from "next-auth/react";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
 
 export default function HomePage() {
+  const { data: session } = useSession();
+
   const [bot, setBot] = useState<BotInfoType | null>(null);
+  const [users, setUsers] = useState<UserType[] | []>([]);
+  const [chatSection, setChatSection] = useState<ChatSectionType| null>(null);
   const [inputMessage, setInputMessage] = useState("");
-  const [chatHistory, setChatHistory] = useState<
-    { role: "user" | "assistant"; content: string }[]
-  >([]);
+  const [chatMessage, setChatMessage] = useState<{ role: "user" | "assistant", content: string }[]>([]);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const { handleAIResponse } = useAIService();
   const { fetchBotInfo } = useBotService();
+  const { fetchUserData } = useUserService();
+  const { createNewChatSection } = useSectionService();
 
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -24,33 +32,64 @@ export default function HomePage() {
   // Event Handlers
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const userId = users.find(user => user.email == session?.user?.email)?.id;
+  
     if (!inputMessage.trim()) return;
-
-    setChatHistory((prev) => [
-      ...prev,
-      { role: "user", content: inputMessage },
-    ]);
-
+  
     try {
+      let currentSection = chatSection;
+  
+      // Tạo mới section nếu chưa có
+      if (userId) {
+        const sectionInfo = await createNewChatSection(inputMessage, userId);
+        setChatSection(sectionInfo); 
+        currentSection = sectionInfo; 
+      }
+  
+      setChatMessage((prev) => [
+        ...prev,
+        { role: "user", content: inputMessage },
+      ]);
+  
+      await axios.post<ChatMessageType[]>(`${API_BASE_URL}/chatMessages`, {
+        role: "user",
+        content: inputMessage,
+        timestamp: Date.now(),
+        sectionId: currentSection?.id,
+      });
+  
+      setInputMessage("");
+  
+      // Xử lý phản hồi từ AI
       const aiResponse = await handleAIResponse(inputMessage);
-      setChatHistory((prev) => [
+      setChatMessage((prev) => [
         ...prev,
         { role: "assistant", content: aiResponse },
       ]);
+  
+      // Gửi message từ AI
+      await axios.post<ChatMessageType[]>(`${API_BASE_URL}/chatMessages`, {
+        role: "assistant",
+        content: aiResponse,
+        timestamp: Date.now(),
+        sectionId: currentSection?.id,
+      });
     } catch (error) {
       setToastMessage(
         error instanceof Error ? error.message : "Something went wrong"
       );
       setToastOpen(true);
     }
-    setInputMessage("");
   };
+  
 
   useEffect(() => {
-    const initBot = async () => {
+    const init = async () => {
       try {
         const botInfo = await fetchBotInfo();
+        const userData = await fetchUserData();
         setBot(botInfo);
+        setUsers(userData);
       } catch (error) {
         setToastMessage(
           error instanceof Error ? error.message : "Something went wrong"
@@ -58,15 +97,15 @@ export default function HomePage() {
         setToastOpen(true);
       }
     };
-    initBot();
-  }, []);
+    init();
+  }, [chatSection]);
 
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop =
         chatContainerRef.current.scrollHeight;
     }
-  }, [chatHistory]);
+  }, [chatMessage]);
 
   // Loading
   if (!bot) {
@@ -80,9 +119,7 @@ export default function HomePage() {
   // Render
   return (
     <div className="flex flex-col h-[85vh]">
-      {/* ChatMessages Component */}
-      <ChatMessages bot={bot} messages={chatHistory} />
-      {/* ChatInput Component */}
+      <ChatMessages bot={bot} messages={chatMessage} />
       <ChatInput
         input={inputMessage}
         setInput={setInputMessage}

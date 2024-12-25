@@ -15,10 +15,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { ChatHistoryType } from "@/types";
+import { ChatSectionType } from "@/types";
+import LoadingSpinner from "@/components/spinner";
 
 interface ChatHistoryProps {
-  data: ChatHistoryType[] | null;
+  data?: ChatSectionType[] | null;
 }
 
 export default function ChatHistory({ data }: ChatHistoryProps) {
@@ -28,8 +29,8 @@ export default function ChatHistory({ data }: ChatHistoryProps) {
         data.map((item, index) => (
           <SidebarMenuItem key={index}>
             <SidebarMenuButton asChild>
-              <Link href={item.id}>
-                <span>{item.messages[0]?.content || "No messages yet"}</span>
+              <Link href={"/chat?id="+item.id}>
+                <span>{item.title || "New chat"}</span>
               </Link>
             </SidebarMenuButton>
             <DropdownMenu>
@@ -50,9 +51,7 @@ export default function ChatHistory({ data }: ChatHistoryProps) {
           </SidebarMenuItem>
         ))
       ) : (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-100">
-          <div className="w-16 h-16 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
-        </div>
+        <LoadingSpinner />
       )}
     </SidebarMenu>
   );

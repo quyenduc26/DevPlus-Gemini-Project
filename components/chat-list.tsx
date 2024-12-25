@@ -4,10 +4,11 @@ import { Bot } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
+import { BotInfoType, ChatMessageType } from '@/types';
 
 type ChatMessagesProps = {
-  bot: { name: string; description: string; version: string; createdDate: string };
-  messages: { role: 'user' | 'assistant'; content: string }[];
+  bot: BotInfoType;
+  messages: { role: "user" | "assistant", content: string }[];
 };
 
 export function ChatMessages({ bot, messages }: ChatMessagesProps) {

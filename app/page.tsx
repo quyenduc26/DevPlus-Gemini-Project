@@ -11,9 +11,9 @@ export default function HomePage() {
   const [bot, setBot] = useState<BotInfoType | null>(null)
   const [inputMessage, setInputMessage] = useState('')
   const [chatHistory, setChatHistory] = useState<
-    { role: "user" | "model"; content: string }[]
-  >([]);
-  const chatContainerRef = useRef<HTMLDivElement>(null);
+    { role: 'user' | 'model'; content: string }[]
+  >([])
+  const chatContainerRef = useRef<HTMLDivElement>(null)
 
   const { handleAIResponse } = useAIService()
   const { fetchBotInfo } = useBotService()
@@ -29,11 +29,8 @@ export default function HomePage() {
     setChatHistory(prev => [...prev, { role: 'user', content: inputMessage }])
 
     try {
-      const aiResponse = await handleAIResponse(inputMessage, chatHistory);
-      setChatHistory((prev) => [
-        ...prev,
-        { role: "model", content: aiResponse },
-      ]);
+      const aiResponse = await handleAIResponse(inputMessage, chatHistory)
+      setChatHistory(prev => [...prev, { role: 'model', content: aiResponse }])
     } catch (error) {
       setToastMessage(
         error instanceof Error ? error.message : 'Something went wrong'

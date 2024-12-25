@@ -1,12 +1,12 @@
-import React from 'react';
-import Google from '@/public/google.svg';
-import Github from '@/public/github.svg';
-import { LoginButton } from './LoginButton';
-import { auth, signIn } from '@/auth';
-import { redirect } from 'next/navigation';
+import React from 'react'
+import Google from '@/public/google.svg'
+import Github from '@/public/github.svg'
+import { LoginButton } from './LoginButton'
+import { auth, signIn } from '@/auth'
+import { redirect } from 'next/navigation'
 
 const LoginPage = async () => {
-  const session = await auth();
+  const session = await auth()
   return (
     <div className="mx-auto w-full max-w-md">
       <div className="rounded-lg bg-white p-8 shadow-2xl">
@@ -19,8 +19,8 @@ const LoginPage = async () => {
           <div>
             <form
               action={async () => {
-                'use server';
-                await signIn('github');
+                'use server'
+                await signIn('github')
               }}
             >
               <LoginButton
@@ -31,8 +31,8 @@ const LoginPage = async () => {
             </form>
             <form
               action={async () => {
-                'use server';
-                await signIn('google');
+                'use server'
+                await signIn('google')
               }}
             >
               <LoginButton
@@ -45,7 +45,7 @@ const LoginPage = async () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage

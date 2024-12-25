@@ -1,24 +1,24 @@
-import React from 'react';
-import { MoreHorizontal } from 'lucide-react';
-import Link from 'next/link';
+import React from 'react'
+import { MoreHorizontal } from 'lucide-react'
+import Link from 'next/link'
 import {
   SidebarMenu,
   SidebarMenuAction,
   SidebarMenuButton,
-  SidebarMenuItem,
-} from '@/components/ui/sidebar';
+  SidebarMenuItem
+} from '@/components/ui/sidebar'
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
 
-import { ChatHistoryType } from '@/types';
+import { ChatHistoryType } from '@/types'
 
 interface ChatHistoryProps {
-  data: ChatHistoryType[] | null;
+  data: ChatHistoryType[] | null
 }
 
 export default function ChatHistory({ data }: ChatHistoryProps) {
@@ -51,5 +51,5 @@ export default function ChatHistory({ data }: ChatHistoryProps) {
         </div>
       )}
     </SidebarMenu>
-  );
+  )
 }

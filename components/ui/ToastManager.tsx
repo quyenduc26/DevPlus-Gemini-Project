@@ -1,15 +1,15 @@
-'use client';
+'use client'
 
-import * as Toast from '@radix-ui/react-toast';
+import * as Toast from '@radix-ui/react-toast'
 
 export default function ToastManager({
   message,
   isOpen,
-  onClose,
+  onClose
 }: {
-  message: string;
-  isOpen: boolean;
-  onClose: () => void;
+  message: string
+  isOpen: boolean
+  onClose: () => void
 }) {
   return (
     <Toast.Provider swipeDirection="right">
@@ -30,5 +30,5 @@ export default function ToastManager({
       </Toast.Root>
       <Toast.Viewport className="fixed bottom-4 right-4 z-50 flex w-96 max-w-full flex-col gap-2" />
     </Toast.Provider>
-  );
+  )
 }

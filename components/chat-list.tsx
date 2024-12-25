@@ -1,19 +1,19 @@
-'use client';
+'use client'
 
-import { Bot } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import Image from 'next/image';
-import ReactMarkdown from 'react-markdown';
+import { Bot } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import Image from 'next/image'
+import ReactMarkdown from 'react-markdown'
 
 type ChatMessagesProps = {
   bot: {
-    name: string;
-    description: string;
-    version: string;
-    createdDate: string;
-  };
-  messages: { role: 'user' | 'assistant'; content: string }[];
-};
+    name: string
+    description: string
+    version: string
+    createdDate: string
+  }
+  messages: { role: 'user' | 'assistant'; content: string }[]
+}
 
 export function ChatMessages({ bot, messages }: ChatMessagesProps) {
   return (
@@ -35,7 +35,7 @@ export function ChatMessages({ bot, messages }: ChatMessagesProps) {
                 'flex items-start gap-3 rounded-lg p-4',
                 message.role === 'assistant'
                   ? 'flex-row bg-muted' // AI: on the left
-                  : 'flex-row-reverse bg-blue-100', // User: on the right
+                  : 'flex-row-reverse bg-blue-100' // User: on the right
               )}
             >
               <div className="flex h-8 w-8 items-center justify-center rounded-full text-primary-foreground">
@@ -67,5 +67,5 @@ export function ChatMessages({ bot, messages }: ChatMessagesProps) {
         )}
       </div>
     </main>
-  );
+  )
 }

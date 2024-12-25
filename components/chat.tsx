@@ -1,14 +1,14 @@
-'use client';
+'use client'
 
-import { Send } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Send } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
 type ChatInputProps = {
-  input: string;
-  setInput: (value: string) => void;
-  handleSubmit: (e: React.FormEvent) => void;
-};
+  input: string
+  setInput: (value: string) => void
+  handleSubmit: (e: React.FormEvent) => void
+}
 
 export function ChatInput({ input, setInput, handleSubmit }: ChatInputProps) {
   return (
@@ -16,7 +16,7 @@ export function ChatInput({ input, setInput, handleSubmit }: ChatInputProps) {
       <form onSubmit={handleSubmit} className="relative mx-auto max-w-3xl">
         <Input
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={e => setInput(e.target.value)}
           placeholder="Message Gemini Vietnam..."
           className="rounded-full border-2 border-gray-200 pr-12 transition-all focus:ring-2 focus:ring-blue-200"
         />
@@ -35,5 +35,5 @@ export function ChatInput({ input, setInput, handleSubmit }: ChatInputProps) {
         AI may display inaccurate info. Please verify important information.
       </p>
     </footer>
-  );
+  )
 }

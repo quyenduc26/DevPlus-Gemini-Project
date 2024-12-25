@@ -1,12 +1,12 @@
-import React from 'react';
-import { Button, ButtonProps } from '@/components/ui/button';
+import React from 'react'
+import { Button, ButtonProps } from '@/components/ui/button'
 
-import Image from 'next/image';
+import Image from 'next/image'
 
 interface LoginButtonProps extends ButtonProps {
-  className?: string;
-  icon: string;
-  provider: string;
+  className?: string
+  icon: string
+  provider: string
 }
 const LoginButton: React.FC<LoginButtonProps> = ({
   className,
@@ -26,7 +26,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({
         Login with {provider}
       </Button>
     </>
-  );
-};
+  )
+}
 
-export { LoginButton };
+export { LoginButton }

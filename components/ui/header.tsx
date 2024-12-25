@@ -1,8 +1,8 @@
-'use client';
+'use client'
 
-import * as React from 'react';
-import Link from 'next/link';
-import { CircleUserRound } from 'lucide-react';
+import * as React from 'react'
+import Link from 'next/link'
+import { CircleUserRound } from 'lucide-react'
 
 export function Header() {
   return (
@@ -21,5 +21,5 @@ export function Header() {
         </Link>
       </div>
     </header>
-  );
+  )
 }

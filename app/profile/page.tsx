@@ -1,10 +1,10 @@
-import { auth } from '@/auth';
-import Image from 'next/image';
-import { redirect } from 'next/navigation';
+import { auth } from '@/auth'
+import Image from 'next/image'
+import { redirect } from 'next/navigation'
 export default async function ProfilePage() {
-  const userInfor = await auth();
+  const userInfor = await auth()
   if (!userInfor?.user) {
-    redirect('/login');
+    redirect('/login')
   }
 
   return (
@@ -101,5 +101,5 @@ export default async function ProfilePage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,11 +1,11 @@
-'use client';
+'use client'
 
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { useSession, signOut } from 'next-auth/react';
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { useSession, signOut } from 'next-auth/react'
 
-import { ChevronUp } from 'lucide-react';
-import Link from 'next/link';
+import { ChevronUp } from 'lucide-react'
+import Link from 'next/link'
 import {
   Sidebar,
   SidebarContent,
@@ -16,41 +16,41 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem,
-} from '@/components/ui/sidebar';
+  SidebarMenuItem
+} from '@/components/ui/sidebar'
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
 
-import { ChatHistoryType } from '@/types';
-import ChatHistory from '@/components/chatHistory';
-import Image from 'next/image';
+import { ChatHistoryType } from '@/types'
+import ChatHistory from '@/components/chatHistory'
+import Image from 'next/image'
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
+  process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000'
 
 export function AppSidebar() {
-  const { data: session } = useSession(); // Lấy session từ NextAuth
-  const [chat, setChat] = useState<ChatHistoryType[] | null>(null);
+  const { data: session } = useSession() // Lấy session từ NextAuth
+  const [chat, setChat] = useState<ChatHistoryType[] | null>(null)
 
   const fetchData = async () => {
     try {
       const chatHistoryRes = await axios.get<ChatHistoryType[]>(
-        API_BASE_URL + '/chatHistory',
-      );
-      setChat(chatHistoryRes.data);
+        API_BASE_URL + '/chatHistory'
+      )
+      setChat(chatHistoryRes.data)
     } catch (error) {
-      console.error('Error fetching chat history:', error);
+      console.error('Error fetching chat history:', error)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   return (
     <Sidebar>
@@ -131,5 +131,5 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
-  );
+  )
 }

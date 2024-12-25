@@ -1,32 +1,22 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
+import axios from "axios";
 // AI Service
 const useAIService = () => {
-  const botErrorMessage = "Something went wrong !!";
-  const handleAIResponse = async (userMessage: string) => {
+  const errorMessage = "Error in AI response";
+  const handleAIResponse = async (
+    userMessage: string,
+    chatHistory: { role: "user" | "model"; content: string }[]
+  ) => {
     try {
-      const aiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
-      const genAI = new GoogleGenerativeAI(aiKey);
-      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
-
-      const generationConfig = {
-        temperature: 1,
-        topP: 0.95,
-        topK: 40,
-        maxOutputTokens: 8192,
-        responseMimeType: "text/plain",
-      };
-
-      const result = await model.generateContent({
-        contents: [{ role: "user", parts: [{ text: userMessage }] }],
-        generationConfig,
+      const response = await axios.post("/api/ai_service", {
+        userMessage,
+        chatHistory,
       });
-
-      return result.response.text();
+      if (response.status !== 200) {
+        throw new Error(response.data.error || errorMessage);
+      }
+      return response.data.text;
     } catch (error) {
-      throw new Error(
-        error instanceof Error ? error.message : botErrorMessage
-      );
+      throw error;
     }
   };
 

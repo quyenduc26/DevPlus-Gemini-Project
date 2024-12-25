@@ -11,7 +11,7 @@ export default function HomePage() {
   const [bot, setBot] = useState<BotInfoType | null>(null);
   const [inputMessage, setInputMessage] = useState("");
   const [chatHistory, setChatHistory] = useState<
-    { role: "user" | "assistant"; content: string }[]
+    { role: "user" | "model"; content: string }[]
   >([]);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -32,10 +32,10 @@ export default function HomePage() {
     ]);
 
     try {
-      const aiResponse = await handleAIResponse(inputMessage);
+      const aiResponse = await handleAIResponse(inputMessage, chatHistory);
       setChatHistory((prev) => [
         ...prev,
-        { role: "assistant", content: aiResponse },
+        { role: "model", content: aiResponse },
       ]);
     } catch (error) {
       setToastMessage(

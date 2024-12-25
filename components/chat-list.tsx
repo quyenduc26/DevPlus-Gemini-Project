@@ -7,7 +7,7 @@ import ReactMarkdown from "react-markdown";
 
 type ChatMessagesProps = {
   bot: { name: string; description: string; version: string; createdDate: string };
-  messages: { role: 'user' | 'assistant'; content: string }[];
+  messages: { role: 'user' | 'model'; content: string }[];
 };
 
 export function ChatMessages({ bot, messages }: ChatMessagesProps) {
@@ -28,13 +28,13 @@ export function ChatMessages({ bot, messages }: ChatMessagesProps) {
               key={i}
               className={cn(
                 'flex items-start gap-3 p-4 rounded-lg',
-                message.role === 'assistant'
+                message.role === 'model'
                   ? 'bg-muted flex-row' // AI: on the left 
                   : 'bg-blue-100 flex-row-reverse' // User: on the right 
               )}
             >
               <div className="h-8 w-8 rounded-full flex items-center justify-center text-primary-foreground">
-                {message.role === 'assistant' ? <Bot className="h-5 w-5 bg-primary rounded-full h-8 w-8" /> :
+                {message.role === 'model' ? <Bot className="h-5 w-5 bg-primary rounded-full h-8 w-8" /> :
                   <div className="flex items-center gap-2">
                     <Image
                       src={"/avatar-default.png"}
@@ -49,7 +49,7 @@ export function ChatMessages({ bot, messages }: ChatMessagesProps) {
               </div>
               <div className="flex-1">
                 <p className="font-medium mb-1 text-sm text-gray-800">
-                  {message.role === 'assistant' ? 'Chat Gemini' : ''}
+                  {message.role === 'model' ? 'Chat Gemini' : ''}
                 </p>
                 <ReactMarkdown className="text-sm text-gray-600">
                   {message.content}

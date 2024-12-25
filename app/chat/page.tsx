@@ -1,29 +1,28 @@
 'use client'
 
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { BotInfoType, ChatHistoryType } from "@/types";
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { BotInfoType } from '@/types'
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000'
 
 export default function HomePage() {
-  const [bot, setBot] = useState<BotInfoType | null>(null);
-  const [chat, setChat] = useState<ChatHistoryType | null>(null);
+  const [bot, setBot] = useState<BotInfoType | null>(null)
 
   const fetchBotInfo = async () => {
     try {
-      const botInfoRes = await axios.get<BotInfoType>(API_BASE_URL);
-      const chatHistoryRes = await axios.get<ChatHistoryType>(API_BASE_URL);
-      setBot(botInfoRes.data);
-      setBot(botInfoRes.data);
+      const botInfoRes = await axios.get<BotInfoType>(API_BASE_URL)
+      setBot(botInfoRes.data)
+      setBot(botInfoRes.data)
     } catch (error) {
-      console.error("Error fetching bot info:", error);
+      console.error('Error fetching bot info:', error)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchBotInfo();
-  }, []);
+    fetchBotInfo()
+  }, [])
 
   return (
     <div className="p-8">
@@ -38,5 +37,5 @@ export default function HomePage() {
         <p>Loading bot information...</p>
       )}
     </div>
-  );
+  )
 }

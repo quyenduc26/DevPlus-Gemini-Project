@@ -35,7 +35,6 @@ export default function Page() {
   const chatId = useSearchParams().get("id");
 
   const init = async () => {
-    console.log(session?.user)
     try {
       const botInfo = await fetchBotInfo();
       const userData = await fetchUserData();
@@ -119,7 +118,6 @@ export default function Page() {
   
 
   useEffect(() => {
-    console.log(" User effect 1 ran !!!!!!")
     init();
   }, [session]);
 

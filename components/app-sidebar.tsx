@@ -3,6 +3,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useSession, signOut } from 'next-auth/react'
+import { useRouter } from 'next/compat/router'
 
 import { ChevronUp } from 'lucide-react'
 import Link from 'next/link'
@@ -29,12 +30,13 @@ import {
 import { ChatSectionType, UserType } from "@/types";
 import ChatHistory from "@/components/chatHistory";
 import Image from "next/image";
-import { Button } from '@/components/ui/button'
 import { useSectionService, useUserService } from '@/app/hooks'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
 
 export function AppSidebar() {
+  const router = useRouter();
+
   const { data: session } = useSession();
   const [allSections, setALlSections] = useState<ChatSectionType[] | null>(null);
   const [chatSection, setChatSection] = useState<ChatSectionType | null>(null);
@@ -47,7 +49,6 @@ export function AppSidebar() {
     if (!session?.user?.email) return;
 
     const userEmail = session.user.email;
-    console.log(userEmail);
 
     try {
       const userData = await fetchUserData();
@@ -68,7 +69,7 @@ export function AppSidebar() {
       const filteredSections = allChatSections.filter(section => section.userId == existingUser?.id)
       setALlSections(filteredSections?.reverse());
     } catch (error) {
-      console.error("Error fetching user or chat data:", error);
+      throw error;
     }
   }
 
@@ -77,12 +78,13 @@ export function AppSidebar() {
     if (userId) {
       const sectionInfo = await createNewChatSection("New chat", userId);
       setChatSection(sectionInfo);
+      window.location.href = `/chat?id=${sectionInfo.id}`;
     }
   }
 
   useEffect(() => {
     fetchData();
-  }, [session, allSections, chatSection]);
+  }, [session, chatSection]);
 
   return (
     <Sidebar>

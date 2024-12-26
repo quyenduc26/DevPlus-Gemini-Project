@@ -26,7 +26,7 @@ export default function Page() {
   const { handleAIResponse } = useAIService();
   const { fetchBotInfo } = useBotService();
   const { fetchUserData } = useUserService();
-  const { fetchSectionData, createNewChatSection } = useSectionService();
+  const { fetchSectionData, createNewChatSection, updateSectionTitle } = useSectionService();
   const { fetchMessage } = useMessageService();
 
   const [toastOpen, setToastOpen] = useState(false);
@@ -74,9 +74,12 @@ export default function Page() {
   // Event Handlers
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(chatSection?.id)
-    const userId = users.find(user => user.email === session?.user?.email)?.id;
     if (!inputMessage.trim()) return;
+    if(chatMessage.length == 0 && chatSection){
+      console.log(chatSection?.id, inputMessage)
+      updateSectionTitle(chatSection?.id, inputMessage)
+    }
+    const userId = users.find(user => user.email === session?.user?.email)?.id;
     try {
       if (!chatSection && userId) {
         const sectionInfo = await createNewChatSection(inputMessage, userId);
@@ -125,12 +128,10 @@ export default function Page() {
   }
 
   useEffect(() => {
-    console.log(" User effect 1 ran !!!!!!")
     init();
   }, []);
 
   useEffect(() => {
-    console.log(" User effect ran 2 !!!!!!")
     getDataMessage();
   }, [chatId, session]);
 

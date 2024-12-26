@@ -4,7 +4,7 @@ import { Bot } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
-
+import { userRole, botRole } from '@/constants'
 type ChatMessagesProps = {
   bot: {
     name: string
@@ -12,9 +12,8 @@ type ChatMessagesProps = {
     version: string
     createdDate: string
   }
-  messages: { role: 'user' | 'model'; content: string }[]
+  messages: { role: typeof userRole | typeof botRole; content: string }[]
 }
-
 export function ChatMessages({ bot, messages }: ChatMessagesProps) {
   return (
     <main className="flex-1 overflow-auto p-4">

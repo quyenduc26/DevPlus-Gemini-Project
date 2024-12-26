@@ -1,18 +1,18 @@
-import { AppSidebar } from "@/components/app-sidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import "./globals.css";
-import type { Metadata } from "next";
-import { SessionProvider } from "next-auth/react";
+import { AppSidebar } from '@/components/app-sidebar'
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import './globals.css'
+import type { Metadata } from 'next'
+import { SessionProvider } from 'next-auth/react'
 
 export const metadata: Metadata = {
-  title: "FloraLens - AI",
-  description: "FloraLens - AI",
-};
+  title: 'FloraLens - AI',
+  description: 'FloraLens - AI'
+}
 
 export default function RootLayout({
-  children,
+  children
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en">
@@ -37,5 +37,5 @@ export default function RootLayout({
         </SessionProvider>
       </body>
     </html>
-  );
+  )
 }

@@ -1,22 +1,24 @@
-"use client";
-
+'use client'
 import { useEffect, useState, useRef } from "react";
 import { BotInfoType, ChatMessageType, ChatSectionType, UserType } from "@/types";
 import { ChatMessages } from "@/components/chat-list";
 import { ChatInput } from "@/components/chat";
-import { useAIService, useBotService, useUserService, useSectionService } from "./hooks";
+import { useAIService, useBotService, useUserService, useSectionService, useMessageService } from "./hooks";
 import ToastManager from "@/components/ui/ToastManager";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from 'next/navigation'
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
 
-export default function HomePage() {
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000'
+
+export default function Page() {
   const { data: session } = useSession();
 
   const [bot, setBot] = useState<BotInfoType | null>(null);
   const [users, setUsers] = useState<UserType[] | []>([]);
-  const [chatSection, setChatSection] = useState<ChatSectionType| null>(null);
+  const [chatSection, setChatSection] = useState<ChatSectionType | null>(null);
   const [inputMessage, setInputMessage] = useState("");
   const [chatMessage, setChatMessage] = useState<{ role: "user" | "assistant", content: string }[]>([]);
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -24,55 +26,88 @@ export default function HomePage() {
   const { handleAIResponse } = useAIService();
   const { fetchBotInfo } = useBotService();
   const { fetchUserData } = useUserService();
-  const { createNewChatSection } = useSectionService();
+  const { fetchSectionData, createNewChatSection } = useSectionService();
+  const { fetchMessage } = useMessageService();
 
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
+  const chatId = useSearchParams().get("id");
+
+  const init = async () => {
+    console.log(session?.user)
+    try {
+      const botInfo = await fetchBotInfo();
+      const userData = await fetchUserData();
+      setBot(botInfo);
+      setUsers(userData);
+    } catch (error) {
+      setToastMessage(
+        error instanceof Error ? error.message : "Something went wrong"
+      );
+      setToastOpen(true);
+    }
+  };
+
+
   // Event Handlers
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const userId = users.find(user => user.email == session?.user?.email)?.id;
   
+    const userId = users.find(user => user.email === session?.user?.email)?.id;
     if (!inputMessage.trim()) return;
   
+    let currentSectionId = chatSection?.id;
+  
     try {
-      let currentSection = chatSection;
-  
-      // Tạo mới section nếu chưa có
-      if (userId) {
+      if (!chatSection && userId) {
         const sectionInfo = await createNewChatSection(inputMessage, userId);
-        setChatSection(sectionInfo); 
-        currentSection = sectionInfo; 
+        setChatSection(sectionInfo);
+        currentSectionId = sectionInfo.id; // Lưu sectionId tạm thời
       }
+    } catch (error) {
+      setToastMessage(
+        error instanceof Error ? error.message : "Something went wrong"
+      );
+      setToastOpen(true);
+      return;
+    }
   
-      setChatMessage((prev) => [
-        ...prev,
-        { role: "user", content: inputMessage },
-      ]);
+    // Gửi tin nhắn của user
+    setChatMessage((prev) => [
+      ...prev,
+      { role: "user", content: inputMessage },
+    ]);
   
+    try {
       await axios.post<ChatMessageType[]>(`${API_BASE_URL}/chatMessages`, {
         role: "user",
         content: inputMessage,
         timestamp: Date.now(),
-        sectionId: currentSection?.id,
+        sectionId: currentSectionId, // Sử dụng sectionId tạm thời
       });
-  
       setInputMessage("");
+    } catch (error) {
+      setToastMessage(
+        error instanceof Error ? error.message : "Something went wrong"
+      );
+      setToastOpen(true);
+      return;
+    }
   
-      // Xử lý phản hồi từ AI
+    // Gửi phản hồi từ AI
+    try {
       const aiResponse = await handleAIResponse(inputMessage);
       setChatMessage((prev) => [
         ...prev,
         { role: "assistant", content: aiResponse },
       ]);
   
-      // Gửi message từ AI
       await axios.post<ChatMessageType[]>(`${API_BASE_URL}/chatMessages`, {
         role: "assistant",
         content: aiResponse,
         timestamp: Date.now(),
-        sectionId: currentSection?.id,
+        sectionId: currentSectionId, // Sử dụng sectionId tạm thời
       });
     } catch (error) {
       setToastMessage(
@@ -84,21 +119,9 @@ export default function HomePage() {
   
 
   useEffect(() => {
-    const init = async () => {
-      try {
-        const botInfo = await fetchBotInfo();
-        const userData = await fetchUserData();
-        setBot(botInfo);
-        setUsers(userData);
-      } catch (error) {
-        setToastMessage(
-          error instanceof Error ? error.message : "Something went wrong"
-        );
-        setToastOpen(true);
-      }
-    };
+    console.log(" User effect 1 ran !!!!!!")
     init();
-  }, [chatSection]);
+  }, [session]);
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -131,5 +154,5 @@ export default function HomePage() {
         onClose={() => setToastOpen(false)}
       />
     </div>
-  );
+  )
 }

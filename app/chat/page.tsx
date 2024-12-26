@@ -10,7 +10,8 @@ import { useSession } from "next-auth/react";
 import { useSearchParams } from 'next/navigation'
 
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000'
 
 export default function Page() {
   const { data: session } = useSession();
@@ -32,10 +33,6 @@ export default function Page() {
   const [toastMessage, setToastMessage] = useState("");
 
   const chatId = useSearchParams().get("id");
-  // console.log(chatId);
-  // const userId = users.find(user => user.email === session?.user?.email)?.id;
-  // console.log(session?.user);
-  // console.log(userId);
 
   const init = async () => {
     try {
@@ -125,7 +122,7 @@ export default function Page() {
       );
       setToastOpen(true);
     }
-  };
+  }
 
   useEffect(() => {
     console.log(" User effect 1 ran !!!!!!")
@@ -168,5 +165,5 @@ export default function Page() {
         onClose={() => setToastOpen(false)}
       />
     </div>
-  );
+  )
 }

@@ -1,11 +1,11 @@
-"use client";
+'use client'
 
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useSession, signOut } from "next-auth/react";
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { useSession, signOut } from 'next-auth/react'
 
-import { ChevronUp } from "lucide-react";
-import Link from "next/link";
+import { ChevronUp } from 'lucide-react'
+import Link from 'next/link'
 import {
   Sidebar,
   SidebarContent,
@@ -16,15 +16,15 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
+  SidebarMenuItem
+} from '@/components/ui/sidebar'
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
 
 import { ChatSectionType, UserType } from "@/types";
 import ChatHistory from "@/components/chatHistory";
@@ -60,7 +60,7 @@ export function AppSidebar() {
     } catch (error) {
       console.error("Error fetching user or chat data:", error);
     }
-  };
+  }
 
   useEffect(() => {
     fetchUserData();
@@ -97,7 +97,7 @@ export function AppSidebar() {
                 <SidebarMenuButton>
                   <div className="flex items-center gap-2">
                     <Image
-                      src={session?.user?.image || "/avatar-default.png"}
+                      src={session?.user?.image || '/avatar-default.png'}
                       alt="User Avatar"
                       className="rounded-full object-cover object-center bg-gray-200"
                       width={28}
@@ -143,5 +143,5 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
-  );
+  )
 }

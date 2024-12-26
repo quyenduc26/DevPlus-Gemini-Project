@@ -1,10 +1,11 @@
 import axios from 'axios'
+import { userRole, botRole } from '@/constants'
 // AI Service
 const useAIService = () => {
   const errorMessage = 'Error in AI response'
   const handleAIResponse = async (
     userMessage: string,
-    chatHistory: { role: 'user' | 'model'; content: string }[]
+    chatHistory: { role: typeof userRole | typeof botRole; content: string }[]
   ) => {
     try {
       const response = await axios.post('/api/ai_service', {

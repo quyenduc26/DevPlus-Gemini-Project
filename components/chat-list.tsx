@@ -43,7 +43,7 @@ export function ChatMessages({ bot, messages }: ChatMessagesProps) {
               )}
             >
               <div className="flex h-8 w-8 items-center justify-center rounded-full text-primary-foreground">
-                {message.role === 'model' ? (
+                {message.role === botRole ? (
                   <Bot className="h-8 w-8 rounded-full bg-primary" />
                 ) : (
                   <div className="flex items-center gap-2">
@@ -60,7 +60,7 @@ export function ChatMessages({ bot, messages }: ChatMessagesProps) {
               </div>
               <div className="flex-1">
                 <p className="mb-1 text-sm font-medium text-gray-800">
-                  {message.role === 'model' ? 'Chat Gemini' : ''}
+                  {message.role === botRole ? 'Chat Gemini' : ''}
                 </p>
                 <ReactMarkdown
                   className="prose max-w-none text-black"

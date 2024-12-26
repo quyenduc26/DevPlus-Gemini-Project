@@ -1,6 +1,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { GoogleAICacheManager } from '@google/generative-ai/server'
 import { NextRequest, NextResponse } from 'next/server'
+import { userRole } from '@/constants'
 
 export async function POST(req: NextRequest) {
   // Constants
@@ -54,7 +55,7 @@ export async function POST(req: NextRequest) {
     // Generate response
     const genModel = genAI.getGenerativeModelFromCachedContent(cache)
     const result = await genModel.generateContent({
-      contents: [{ role: 'user', parts: [{ text: userMessage }] }],
+      contents: [{ role: userRole, parts: [{ text: userMessage }] }],
       generationConfig
     })
 

@@ -5,6 +5,11 @@ import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
 import { userRole, botRole } from '@/constants'
+import remarkGfm from 'remark-gfm'
+import rehypeHighlight from 'rehype-highlight'
+import 'highlight.js/styles/atom-one-dark.css'
+// import 'highlight.js/styles/github.css'
+
 type ChatMessagesProps = {
   bot: {
     name: string
@@ -32,7 +37,7 @@ export function ChatMessages({ bot, messages }: ChatMessagesProps) {
               key={i}
               className={cn(
                 'flex items-start gap-3 rounded-lg p-4',
-                message.role === 'model'
+                message.role === botRole
                   ? 'flex-row bg-muted' // AI: on the left
                   : 'flex-row-reverse bg-blue-100' // User: on the right
               )}
@@ -57,7 +62,11 @@ export function ChatMessages({ bot, messages }: ChatMessagesProps) {
                 <p className="mb-1 text-sm font-medium text-gray-800">
                   {message.role === 'model' ? 'Chat Gemini' : ''}
                 </p>
-                <ReactMarkdown className="text-sm text-gray-600">
+                <ReactMarkdown
+                  className="prose max-w-none text-black"
+                  remarkPlugins={[remarkGfm]}
+                  rehypePlugins={[rehypeHighlight]}
+                >
                   {message.content}
                 </ReactMarkdown>
               </div>

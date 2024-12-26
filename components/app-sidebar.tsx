@@ -29,19 +29,29 @@ import {
 import { ChatSectionType, UserType } from "@/types";
 import ChatHistory from "@/components/chatHistory";
 import Image from "next/image";
+import { Button } from '@/components/ui/button'
+import { useSectionService, useUserService } from '@/app/hooks'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
 
 export function AppSidebar() {
   const { data: session } = useSession();
-  const [sections, setChatSections] = useState<ChatSectionType[] | null>(null);
+  const [allSections, setALlSections] = useState<ChatSectionType[] | null>(null);
+  const [chatSection, setChatSection] = useState<ChatSectionType | null>(null);
+  const [users, setUsers] = useState<UserType[] | []>([]);
 
-  const fetchUserData = async () => {
+  const { fetchSectionData, createNewChatSection } = useSectionService();
+  const { fetchUserData } = useUserService();
+
+  const fetchData = async () => {
     if (!session?.user?.email) return;
 
     const userEmail = session.user.email;
+    console.log(userEmail);
 
     try {
+      const userData = await fetchUserData();
+      setUsers(userData);
       const { data: users } = await axios.get<UserType[]>(`${API_BASE_URL}/users`);
       const existingUser = users.find((user) => user.email === userEmail);
 
@@ -54,17 +64,25 @@ export function AppSidebar() {
       }
 
       // Fetch chat sections
-      const { data: allChatSections } = await axios.get<ChatSectionType[]>(`${API_BASE_URL}/chatSections`);
-      const filteredSections = allChatSections.filter( section => section.userId == existingUser?.id)
-      setChatSections(filteredSections?.reverse());
+      const allChatSections = await fetchSectionData();
+      const filteredSections = allChatSections.filter(section => section.userId == existingUser?.id)
+      setALlSections(filteredSections?.reverse());
     } catch (error) {
       console.error("Error fetching user or chat data:", error);
     }
   }
 
+  const createNewChat = async () => {
+    const userId = users.find(user => user.email === session?.user?.email)?.id;
+    if (userId) {
+      const sectionInfo = await createNewChatSection("New chat", userId);
+      setChatSection(sectionInfo);
+    }
+  }
+
   useEffect(() => {
-    fetchUserData();
-  }, [session]);
+    fetchData();
+  }, [session, allSections, chatSection]);
 
   return (
     <Sidebar>
@@ -82,9 +100,18 @@ export function AppSidebar() {
 
       <SidebarContent>
         <SidebarGroup>
+          <SidebarGroupContent>
+            <button
+              className="w-full text-center bg-neutral-950 hover:bg-zinc-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 ease-in-out transform active:scale-95"
+              onClick={createNewChat}
+            >
+              New Chat
+            </button>
+
+          </SidebarGroupContent>
           <SidebarGroupLabel>Chat history</SidebarGroupLabel>
           <SidebarGroupContent>
-            <ChatHistory data={sections} />
+            <ChatHistory data={allSections} />
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>

@@ -63,7 +63,7 @@ export default function Page() {
       if (!chatSection && userId) {
         const sectionInfo = await createNewChatSection(inputMessage, userId);
         setChatSection(sectionInfo);
-        currentSectionId = sectionInfo.id; // Lưu sectionId tạm thời
+        currentSectionId = sectionInfo.id; 
       }
     } catch (error) {
       setToastMessage(

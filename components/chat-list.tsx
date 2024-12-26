@@ -4,6 +4,10 @@ import { Bot } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import rehypeHighlight from 'rehype-highlight'
+import 'highlight.js/styles/atom-one-dark.css'
+// import 'highlight.js/styles/github.css'
 
 type ChatMessagesProps = {
   bot: {
@@ -40,7 +44,7 @@ export function ChatMessages({ bot, messages }: ChatMessagesProps) {
             >
               <div className="flex h-8 w-8 items-center justify-center rounded-full text-primary-foreground">
                 {message.role === 'assistant' ? (
-                  <Bot className="h-5 h-8 w-5 w-8 rounded-full bg-primary" />
+                  <Bot className="h-8 w-8 rounded-full bg-primary" />
                 ) : (
                   <div className="flex items-center gap-2">
                     <Image
@@ -58,7 +62,11 @@ export function ChatMessages({ bot, messages }: ChatMessagesProps) {
                 <p className="mb-1 text-sm font-medium text-gray-800">
                   {message.role === 'assistant' ? 'Chat Gemini' : ''}
                 </p>
-                <ReactMarkdown className="text-sm text-gray-600">
+                <ReactMarkdown
+                  className="prose max-w-none text-black"
+                  remarkPlugins={[remarkGfm]}
+                  rehypePlugins={[rehypeHighlight]}
+                >
                   {message.content}
                 </ReactMarkdown>
               </div>

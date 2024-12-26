@@ -1,4 +1,4 @@
-const userRole = 'user'
-const botRole = 'model'
+const USER_ROLE = 'user'
+const BOT_ROLE = 'model'
 
-export { userRole, botRole }
+export { USER_ROLE, BOT_ROLE }

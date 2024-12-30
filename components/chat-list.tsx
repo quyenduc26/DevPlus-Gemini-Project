@@ -9,6 +9,7 @@ import remarkGfm from 'remark-gfm'
 import rehypeHighlight from 'rehype-highlight'
 import 'highlight.js/styles/atom-one-dark.css'
 // import 'highlight.js/styles/github.css'
+import { BotInfoType, ChatMessageType } from '@/types';
 
 type ChatMessagesProps = {
   bot: {

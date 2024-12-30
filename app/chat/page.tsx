@@ -36,6 +36,7 @@ export default function Page() {
 
   const init = async () => {
     try {
+      console.log(session);
       const botInfo = await fetchBotInfo();
       const userData = await fetchUserData();
       setBot(botInfo);

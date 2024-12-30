@@ -1,10 +1,12 @@
 'use client'
-import { useEffect, useState, useRef } from "react";
+
+import { useEffect, useState, useRef } from 'react'
 import { BotInfoType, ChatMessageType, ChatSectionType, UserType } from "@/types";
-import { ChatMessages } from "@/components/chat-list";
-import { ChatInput } from "@/components/chat";
+import { ChatMessages } from '@/components/chat-list'
+import { ChatInput } from '@/components/chat'
 import { useAIService, useBotService, useUserService, useSectionService, useMessageService } from "./hooks";
-import ToastManager from "@/components/ui/ToastManager";
+import ToastManager from '@/components/ui/ToastManager'
+import { USER_ROLE, BOT_ROLE } from '@/constants'
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from 'next/navigation'
@@ -13,15 +15,16 @@ import { useSearchParams } from 'next/navigation'
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000'
 
-export default function Page() {
+export default function HomePage() {
   const { data: session } = useSession();
-
-  const [bot, setBot] = useState<BotInfoType | null>(null);
+  const [bot, setBot] = useState<BotInfoType | null>(null)
   const [users, setUsers] = useState<UserType[] | []>([]);
   const [chatSection, setChatSection] = useState<ChatSectionType | null>(null);
-  const [inputMessage, setInputMessage] = useState("");
-  const [chatMessage, setChatMessage] = useState<{ role: "user" | "assistant", content: string }[]>([]);
-  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const [inputMessage, setInputMessage] = useState('')
+  const [chatHistory, setChatHistory] = useState<
+    { role: typeof USER_ROLE | typeof BOT_ROLE; content: string }[]
+  >([])
+  const chatContainerRef = useRef<HTMLDivElement>(null)
 
   const { handleAIResponse } = useAIService();
   const { fetchBotInfo } = useBotService();
@@ -73,10 +76,7 @@ export default function Page() {
     }
   
     // Gửi tin nhắn của user
-    setChatMessage((prev) => [
-      ...prev,
-      { role: "user", content: inputMessage },
-    ]);
+    setChatHistory(prev => [...prev, { role: USER_ROLE, content: inputMessage }])
   
     try {
       await axios.post<ChatMessageType[]>(`${API_BASE_URL}/chatMessages`, {
@@ -96,11 +96,8 @@ export default function Page() {
   
     // Gửi phản hồi từ AI
     try {
-      const aiResponse = await handleAIResponse(inputMessage);
-      setChatMessage((prev) => [
-        ...prev,
-        { role: "assistant", content: aiResponse },
-      ]);
+      const aiResponse = await handleAIResponse(inputMessage, chatHistory)
+      setChatHistory(prev => [...prev, { role: BOT_ROLE, content: aiResponse }])
   
       await axios.post<ChatMessageType[]>(`${API_BASE_URL}/chatMessages`, {
         role: "assistant",
@@ -126,7 +123,7 @@ export default function Page() {
       chatContainerRef.current.scrollTop =
         chatContainerRef.current.scrollHeight;
     }
-  }, [chatMessage]);
+  }, [chatHistory]);
 
   // Loading
   if (!bot) {
@@ -140,7 +137,7 @@ export default function Page() {
   // Render
   return (
     <div className="flex flex-col h-[85vh]">
-      <ChatMessages bot={bot} messages={chatMessage} />
+      <ChatMessages bot={bot} messages={chatHistory} />
       <ChatInput
         input={inputMessage}
         setInput={setInputMessage}

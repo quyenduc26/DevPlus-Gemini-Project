@@ -11,6 +11,11 @@
       "id": "8cf8",
       "name": "Quyền Nguyễn",
       "email": "quyen.nguyen25@student.passerellesnumeriques.org"
+    },
+    {
+      "id": "821c",
+      "name": "Quyen Duc",
+      "email": "quyenduc26@gmail.com"
     }
   ],
   "chatSections": [
@@ -27,6 +32,13 @@
       "status": 0,
       "timestamp": 1735197314078,
       "userId": "8cf8"
+    },
+    {
+      "id": "7686",
+      "title": "chào bạn mình là Quyền",
+      "status": 0,
+      "timestamp": 1735532008417,
+      "userId": "821c"
     }
   ],
   "chatMessages": [
@@ -85,6 +97,84 @@
       "content": "Chắc chắn rồi, đây là bảng cửu chương từ 1 đến 9:\n\n**Bảng Cửu Chương**\n\n| **x** | **1** | **2** | **3** | **4** | **5** | **6** | **7** | **8** | **9** |\n|---|---|---|---|---|---|---|---|---|---|\n| **1** | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |\n| **2** | 2 | 4 | 6 | 8 | 10 | 12 | 14 | 16 | 18 |\n| **3** | 3 | 6 | 9 | 12 | 15 | 18 | 21 | 24 | 27 |\n| **4** | 4 | 8 | 12 | 16 | 20 | 24 | 28 | 32 | 36 |\n| **5** | 5 | 10 | 15 | 20 | 25 | 30 | 35 | 40 | 45 |\n| **6** | 6 | 12 | 18 | 24 | 30 | 36 | 42 | 48 | 54 |\n| **7** | 7 | 14 | 21 | 28 | 35 | 42 | 49 | 56 | 63 |\n| **8** | 8 | 16 | 24 | 32 | 40 | 48 | 56 | 64 | 72 |\n| **9** | 9 | 18 | 27 | 36 | 45 | 54 | 63 | 72 | 81 |\n\n**Cách sử dụng:**\n\nĐể tìm kết quả của phép nhân, bạn tìm số ở hàng đầu tiên và cột đầu tiên tương ứng với hai số cần nhân. Giao điểm của hàng và cột đó sẽ là kết quả.\n\nVí dụ:\n\n*   3 x 4 = 12 (Tìm số 3 ở hàng đầu tiên, số 4 ở cột đầu tiên, giao điểm là 12)\n*   7 x 8 = 56 (Tìm số 7 ở hàng đầu tiên, số 8 ở cột đầu tiên, giao điểm là 56)\n\nHy vọng bảng cửu chương này sẽ giúp ích cho bạn! Nếu bạn có bất kỳ câu hỏi nào khác, đừng ngần ngại hỏi nhé.\n",
       "timestamp": 1735198139350,
       "sectionId": "4bec"
+    },
+    {
+      "id": "6e3d",
+      "role": "user",
+      "content": "hello",
+      "timestamp": 1735531949400
+    },
+    {
+      "id": "c123",
+      "role": "assistant",
+      "content": "Hello there! How can I help you today?\n",
+      "timestamp": 1735531952065
+    },
+    {
+      "id": "1775",
+      "role": "user",
+      "content": "My name is Quyền",
+      "timestamp": 1735531959271
+    },
+    {
+      "id": "dbb2",
+      "role": "assistant",
+      "content": "It's nice to meet you, Quyền.  How can I assist you today?\n",
+      "timestamp": 1735531961005
+    },
+    {
+      "id": "55a7",
+      "role": "user",
+      "content": "Do you remember my name?",
+      "timestamp": 1735531970073
+    },
+    {
+      "id": "4a4f",
+      "role": "assistant",
+      "content": "Yes, I remember your name is Quyền.  Is there anything I can help you with?\n",
+      "timestamp": 1735531972575
+    },
+    {
+      "id": "45a6",
+      "role": "user",
+      "content": "chào bạn mình là Quyền",
+      "timestamp": 1735532008430,
+      "sectionId": "7686"
+    },
+    {
+      "id": "8916",
+      "role": "assistant",
+      "content": "Chào Quyền! Rất vui được làm quen với bạn. Bạn cần mình giúp gì hôm nay?\n",
+      "timestamp": 1735532010862,
+      "sectionId": "7686"
+    },
+    {
+      "id": "082d",
+      "role": "user",
+      "content": "bạn biết tiếng anh không?",
+      "timestamp": 1735532019295,
+      "sectionId": "7686"
+    },
+    {
+      "id": "5d55",
+      "role": "assistant",
+      "content": "Yes, I know English.  I can understand and respond in English.  How can I help you today?\n",
+      "timestamp": 1735532021804,
+      "sectionId": "7686"
+    },
+    {
+      "id": "9250",
+      "role": "user",
+      "content": "what is my name in English?",
+      "timestamp": 1735532035019,
+      "sectionId": "7686"
+    },
+    {
+      "id": "df5a",
+      "role": "assistant",
+      "content": "Your name, as you've stated, is Quyền.  There isn't a direct English equivalent, as names are culturally specific.  However, if you need a transliteration for use in English-speaking contexts,  the most common and accurate transliteration would be **Quyen**.\n",
+      "timestamp": 1735532037760,
+      "sectionId": "7686"
     }
   ]
 }

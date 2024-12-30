@@ -6,12 +6,13 @@ import { ChatMessages } from '@/components/chat-list'
 import { ChatInput } from '@/components/chat'
 import { useAIService, useBotService } from './hooks'
 import ToastManager from '@/components/ui/ToastManager'
+import { USER_ROLE, BOT_ROLE } from '@/constants'
 
 export default function HomePage() {
   const [bot, setBot] = useState<BotInfoType | null>(null)
   const [inputMessage, setInputMessage] = useState('')
   const [chatHistory, setChatHistory] = useState<
-    { role: 'user' | 'assistant'; content: string }[]
+    { role: typeof USER_ROLE | typeof BOT_ROLE; content: string }[]
   >([])
   const chatContainerRef = useRef<HTMLDivElement>(null)
 
@@ -29,11 +30,8 @@ export default function HomePage() {
     setChatHistory(prev => [...prev, { role: 'user', content: inputMessage }])
 
     try {
-      const aiResponse = await handleAIResponse(inputMessage)
-      setChatHistory(prev => [
-        ...prev,
-        { role: 'assistant', content: aiResponse }
-      ])
+      const aiResponse = await handleAIResponse(inputMessage, chatHistory)
+      setChatHistory(prev => [...prev, { role: BOT_ROLE, content: aiResponse }])
     } catch (error) {
       setToastMessage(
         error instanceof Error ? error.message : 'Something went wrong'

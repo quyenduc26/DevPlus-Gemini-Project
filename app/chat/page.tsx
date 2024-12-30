@@ -8,6 +8,7 @@ import ToastManager from "@/components/ui/ToastManager";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from 'next/navigation'
+import { BOT_ROLE, USER_ROLE } from "@/constants";
 
 
 const API_BASE_URL =
@@ -20,7 +21,9 @@ export default function Page() {
   const [users, setUsers] = useState<UserType[] | []>([]);
   const [chatSection, setChatSection] = useState<ChatSectionType | null>(null);
   const [inputMessage, setInputMessage] = useState("");
-  const [chatMessage, setChatMessage] = useState<{ role: "user" | "assistant", content: string }[]>([]);
+  const [chatHistory, setChatHistory] = useState<
+    { role: typeof USER_ROLE | typeof BOT_ROLE; content: string }[]
+  >([])
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const { handleAIResponse } = useAIService();
@@ -61,7 +64,7 @@ export default function Page() {
       const sectionInfo = sectionData.find(item => item.id === chatId);
       const userId = users.find(user => user.email === session?.user?.email)?.id;
       if (userId && sectionInfo) {
-        setChatMessage(messages);
+        setChatHistory(messages);
         setChatSection(sectionInfo);
       }
     } catch (error) {
@@ -76,7 +79,7 @@ export default function Page() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputMessage.trim()) return;
-    if(chatMessage.length == 0 && chatSection){
+    if(chatHistory.length == 0 && chatSection){
       console.log(chatSection?.id, inputMessage)
       updateSectionTitle(chatSection?.id, inputMessage)
     }
@@ -90,10 +93,7 @@ export default function Page() {
       throw error;
     }
 
-    setChatMessage((prev) => [
-      ...prev,
-      { role: "user", content: inputMessage },
-    ]);
+    setChatHistory(prev => [...prev, { role: USER_ROLE, content: inputMessage }])
 
     try {
       await axios.post<ChatMessageType[]>(`${API_BASE_URL}/chatMessages`, {
@@ -108,11 +108,8 @@ export default function Page() {
     }
 
     try {
-      const aiResponse = await handleAIResponse(inputMessage);
-      setChatMessage((prev) => [
-        ...prev,
-        { role: "assistant", content: aiResponse },
-      ]);
+      const aiResponse = await handleAIResponse(inputMessage, chatHistory)
+      setChatHistory(prev => [...prev, { role: BOT_ROLE, content: aiResponse }])
 
       await axios.post<ChatMessageType[]>(`${API_BASE_URL}/chatMessages`, {
         role: "assistant",
@@ -141,7 +138,7 @@ export default function Page() {
       chatContainerRef.current.scrollTop =
         chatContainerRef.current.scrollHeight;
     }
-  }, [chatMessage]);
+  }, [chatHistory]);
 
   // Loading
   if (!bot) {
@@ -155,7 +152,7 @@ export default function Page() {
   // Render
   return (
     <div className="flex flex-col h-[85vh]">
-      <ChatMessages bot={bot} messages={chatMessage} />
+      <ChatMessages bot={bot} messages={chatHistory} />
       <ChatInput
         input={inputMessage}
         setInput={setInputMessage}

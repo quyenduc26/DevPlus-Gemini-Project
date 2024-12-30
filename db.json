@@ -39,6 +39,20 @@
       "status": 0,
       "timestamp": 1735532008417,
       "userId": "821c"
+    },
+    {
+      "id": "6576",
+      "title": "chào bạn tôi tên Quyền",
+      "status": 0,
+      "timestamp": 1735540910661,
+      "userId": "8cf8"
+    },
+    {
+      "id": "6355",
+      "title": "chào bạn tôi tên QUyền",
+      "status": 0,
+      "timestamp": 1735541001806,
+      "userId": "8cf8"
     }
   ],
   "chatMessages": [
@@ -175,6 +189,88 @@
       "content": "Your name, as you've stated, is Quyền.  There isn't a direct English equivalent, as names are culturally specific.  However, if you need a transliteration for use in English-speaking contexts,  the most common and accurate transliteration would be **Quyen**.\n",
       "timestamp": 1735532037760,
       "sectionId": "7686"
+    },
+    {
+      "id": "4c7a",
+      "role": "user",
+      "content": "chào bạn tôi tên Quyền",
+      "timestamp": 1735540910675
+    },
+    {
+      "id": "139c",
+      "role": "assistant",
+      "content": "Chào Quyền! Rất vui được làm quen với bạn. Bạn khỏe không? Có gì mình có thể giúp bạn không?\n",
+      "timestamp": 1735540913429
+    },
+    {
+      "id": "2574",
+      "role": "user",
+      "content": "đất nước nào ở úc",
+      "timestamp": 1735540926627,
+      "sectionId": "6576"
+    },
+    {
+      "id": "d6da",
+      "role": "assistant",
+      "content": "Câu hỏi của bạn hơi mơ hồ.  Úc *là* một đất nước.  Nó không nằm *trong* một đất nước khác.  Có lẽ bạn muốn hỏi về một khía cạnh khác của Úc? Ví dụ, bạn có muốn biết:\n\n* **Vị trí địa lý của Úc?**  Úc nằm ở bán cầu Nam, giữa Ấn Độ Dương và Thái Bình Dương.\n* **Thủ đô của Úc?** Thủ đô của Úc là Canberra.\n* **Các thành phố lớn của Úc?**  Sydney, Melbourne, Brisbane, Perth, Adelaide là một số thành phố lớn.\n* **Điều gì khác về Úc?** Ví dụ, về văn hóa, lịch sử, hệ sinh thái, v.v...?\n\nHãy cho tôi biết chính xác bạn muốn biết điều gì về Úc để tôi có thể trả lời chính xác hơn.\n",
+      "timestamp": 1735540930276,
+      "sectionId": "6576"
+    },
+    {
+      "id": "b800",
+      "role": "user",
+      "content": "bạn có  nhớ tôi tên gì không",
+      "timestamp": 1735540961638,
+      "sectionId": "6576"
+    },
+    {
+      "id": "165b",
+      "role": "assistant",
+      "content": "Tôi nhớ bạn nói tên bạn là Quyền.\n",
+      "timestamp": 1735540963357,
+      "sectionId": "6576"
+    },
+    {
+      "id": "33c1",
+      "role": "user",
+      "content": "chào bạn tôi tên QUyền",
+      "timestamp": 1735541009501,
+      "sectionId": "6355"
+    },
+    {
+      "id": "5da5",
+      "role": "assistant",
+      "content": "Chào Quyền! Rất vui được làm quen với bạn. Bạn khỏe không? Có gì mình có thể giúp bạn không?\n",
+      "timestamp": 1735541011325,
+      "sectionId": "6355"
+    },
+    {
+      "id": "9e68",
+      "role": "user",
+      "content": "Tôi tên Nhật đúng không bạn",
+      "timestamp": 1735541022399,
+      "sectionId": "6355"
+    },
+    {
+      "id": "f200",
+      "role": "assistant",
+      "content": "Tôi xin lỗi, tôi không có khả năng nhớ những cuộc trò chuyện trước đó.  Bạn nói tên bạn là Nhật, phải không?  Rất vui được làm quen với bạn, Nhật! Bạn khỏe không? Có điều gì tôi có thể giúp bạn không?\n",
+      "timestamp": 1735541025411,
+      "sectionId": "6355"
+    },
+    {
+      "id": "152e",
+      "role": "user",
+      "content": "vậy giờ toi tên gì",
+      "timestamp": 1735541041245,
+      "sectionId": "6355"
+    },
+    {
+      "id": "e8d7",
+      "role": "assistant",
+      "content": "Hiện tại, bạn đang nói bạn tên là Nhật.  Tôi không thể thay đổi hay ghi nhớ tên của bạn trừ khi bạn tự giới thiệu lại.  Tôi chỉ là một mô hình ngôn ngữ lớn, tôi không có bộ nhớ về các cuộc trò chuyện trước đó.  Bạn muốn tôi gọi bạn là gì?\n",
+      "timestamp": 1735541043969,
+      "sectionId": "6355"
     }
   ]
 }
